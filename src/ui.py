@@ -15,6 +15,13 @@ def add_center_label(layout, text, props={}):
     layout.addWidget(txt)
     return txt
 
+def add_click_event(widget, callback):
+    widget.mousePressEvent = callback
+
+def add_hover_event(widget, callback):
+    widget.setMouseTracking(True)
+    widget.mouseMoveEvent = callback
+
 def to_sheet(dict):
     src = ''
     for key, value in dict.items():

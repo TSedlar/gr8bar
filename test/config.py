@@ -44,6 +44,6 @@ def config(bar, layout, ui):
         'css': { **text_hack_props, 'background-color': '#33874c'}
     })
     # render power-off symbol
-    ui.add_center_label(layout, '  &#xf011;  ', {
+    power = ui.add_center_label(layout, '  &#xf011;  ', {
         'css': { **text_fa_props, 'background-color': '#9e3a3a' }
     })

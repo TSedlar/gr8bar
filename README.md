@@ -18,7 +18,6 @@ python3 ./src/gr8bar.by ./test/config.py
 ```
 
 ## TODO
-- Mouse events
 - Inline options
 - Stateful labels
 - Easy shell commands
