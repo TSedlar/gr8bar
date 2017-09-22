@@ -2,6 +2,8 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 import ui
 import sys
 import os
+import threading
+import time
 
 sys.path.append(os.path.dirname(sys.argv[1]))
 cfg = __import__(os.path.basename(sys.argv[1].replace('.py', '')))
@@ -22,14 +24,27 @@ layout = QtWidgets.QHBoxLayout(window)
 layout.setContentsMargins(0, 0, 0, 0)
 layout.setSpacing(0)
 
-cfg.config(window, layout, ui)
+def clearLayout(layout):
+  while layout.count():
+    child = layout.takeAt(0)
+    if child.widget():
+      child.widget().deleteLater()
 
-window.ensurePolished()
+def render():
+    clearLayout(layout)
+    cfg.config(window, layout, ui)
 
-bg = window.palette().color(window.backgroundRole())
-if bg == QtCore.Qt.transparent:
-    window.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-    window.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
+    window.ensurePolished()
 
-window.show()
-app.exec_()
+    bg = window.palette().color(window.backgroundRole())
+    if bg == QtCore.Qt.transparent:
+        window.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        window.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
+
+if __name__ == "__main__":
+    timer = QtCore.QTimer()
+    timer.timeout.connect(render)
+    timer.start(cfg.render_loop_delay())
+    render()
+    window.show()
+    app.exec_()

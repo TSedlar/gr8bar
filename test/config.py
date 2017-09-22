@@ -9,6 +9,9 @@ text_fa_props = { **text_props, 'font-family': 'FontAwesome' }
 def bounds():
     return { 'x': 0, 'y': 0, 'w': 1920, 'h': 28 }
 
+def render_loop_delay():
+    return 1000
+
 def config(bar, layout, ui):
     bar.setStyleSheet('background-color: #323232; border: none;')
     # render wifi symbol
