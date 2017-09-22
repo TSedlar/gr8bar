@@ -1,5 +1,7 @@
-from PyQt5 import QtCore, QtWidgets, QtGui
 import html
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 def add_center_label(layout, text, props={}):
     txt = QtWidgets.QLabel(html.unescape(text))
@@ -15,12 +17,15 @@ def add_center_label(layout, text, props={}):
     layout.addWidget(txt)
     return txt
 
+
 def add_click_event(widget, callback):
     widget.mousePressEvent = callback
+
 
 def add_hover_event(widget, callback):
     widget.setMouseTracking(True)
     widget.mouseMoveEvent = callback
+
 
 def to_sheet(dict):
     src = ''
