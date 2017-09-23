@@ -3,12 +3,10 @@ import math
 import time
 
 text_props = {
-    'font-size': '14px',
     'color': '#c2c2c2'
+    'font-size': '14px',
+    'font-family': 'Hack, FontAwesome'
 }
-
-text_hack_props = {**text_props, 'font-family': 'Hack'}
-text_fa_props = {**text_props, 'font-family': 'FontAwesome'}
 
 panel_bg = '#282936' # 'transparent'
 signal_levels = ['#c42f2f', '#9e3a3a', '#bc5b40', '#7f8432',
@@ -23,7 +21,8 @@ def render_loop_delay():
     return 1000
 
 def config(panel, layout, ui):
-    panel.setStyleSheet('background-color: %s; border: none;' % (panel_bg))
+    panel.set_bg(panel_bg)
+    panel.set_border('none')
     append_network(layout, ui)
     layout.addStretch(1)
     append_date_time(layout, ui)
@@ -40,13 +39,13 @@ def append_network(layout, ui):
     # render wifi symbol
     ui.add_center_label(layout, ' &#xf1eb; ', {
         'width': 30,
-        'css': {**text_fa_props, 'background-color': signal_levels[strength]}
+        'css': {**text_props, 'background-color': signal_levels[strength]}
     })
     # render SSID
     ssid = term("iwgetid -r")
     ui.add_center_label(layout, " %s " % (ssid), {
         'width': 80,
-        'css': {**text_hack_props, 'background-color': '#3b7389'}
+        'css': {**text_props, 'background-color': '#3b7389'}
     })
 
 def append_date_time(layout, ui):
@@ -56,7 +55,7 @@ def append_date_time(layout, ui):
     text = '   %s &#xf07e; %s   ' % (_date, _time)
     hover_text = '  Today is %s  ' % (time.strftime('%A'))
     label = ui.add_center_label(layout, text, {
-        'css': {**text_hack_props, 'background-color': '#684c70'}
+        'css': {**text_props, 'background-color': '#684c70'}
     })
     ui.set_hover_text(label, hover_text)
 
@@ -65,18 +64,18 @@ def append_battery(layout, ui):
     # render bolt if charging
     if term('cat /sys/class/power_supply/BAT0/status') == 'Charging': # charging
         ui.add_center_label(layout, '  &#xf0e7;', {
-            'css': {**text_fa_props, 'background-color': '#33874c'}
+            'css': {**text_props, 'background-color': '#33874c'}
         })
     cap = int(term('cat /sys/class/power_supply/BAT0/capacity'))
     level = (2 if cap >= 60 else (1 if cap >= 30 else 0))
     icon = (3 if cap > 75 else (2 if cap > 50 else (1 if cap > 25 else 0)))
     # render battery symbol
     ui.add_center_label(layout, '  %s ' % (battery_icons[icon]), {
-        'css': {**text_fa_props, 'background-color': battery_levels[level]}
+        'css': {**text_props, 'background-color': battery_levels[level]}
     })
     # render battery %
     label = ui.add_center_label(layout, "%s%% " % (cap), {
-        'css': {**text_hack_props, 'background-color': '#33874c'}
+        'css': {**text_props, 'background-color': '#33874c'}
     })
 
     full = int(term('cat /sys/class/power_supply/BAT0/charge_full'))
@@ -95,7 +94,7 @@ def append_battery(layout, ui):
 def append_power(layout, ui):
     # render power-off symbol
     ui.add_center_label(layout, '  &#xf011;  ', {
-        'css': {**text_fa_props, 'background-color': '#9e3a3a'}
+        'css': {**text_props, 'background-color': '#9e3a3a'}
     })
 
 def term(command):
