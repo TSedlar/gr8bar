@@ -22,15 +22,16 @@ def add_click_event(widget, callback):
     widget.mousePressEvent = callback
 
 
-def add_hover_event(widget, callback):
+def add_hover_event(widget, enter_callback, leave_callback):
     widget.setMouseTracking(True)
-    widget.mouseMoveEvent = callback
+    widget.enterEvent = enter_callback
+    widget.leaveEvent = leave_callback
 
 
-def to_sheet(dict):
+def to_sheet(dictionary):
     src = ''
-    for key, value in dict.items():
-        if len(src) > 0:
+    for key, value in dictionary.items():
+        if len(src):
             src += '\n'
         src += (key + ': ' + value + ';')
     return src

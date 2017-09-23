@@ -10,7 +10,7 @@ text_props = {
 text_hack_props = {**text_props, 'font-family': 'Hack'}
 text_fa_props = {**text_props, 'font-family': 'FontAwesome'}
 
-panel_bg = '#2c3e50' # transparent
+panel_bg = 'transparent'
 signal_levels = ['#c42f2f', '#9e3a3a', '#bc5b40', '#7f8432',
                  '#658432', '#33874c'] # low to high
 battery_icons = ['&#xf243;', '&#xf242;', '&#xf241;', '&#xf240;'] # 25-100%
