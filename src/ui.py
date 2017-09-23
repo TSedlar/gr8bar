@@ -3,6 +3,16 @@ import html
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
+def add_image(layout, image, padding_width=0):
+    label = QtWidgets.QLabel()
+    pixmap = QtGui.QPixmap(image)
+    label.setPixmap(pixmap)
+    label.setFixedWidth(pixmap.width() + padding_width)
+    label.setFixedHeight(pixmap.height())
+    label.setAlignment(QtCore.Qt.AlignCenter)
+    layout.addWidget(label)
+
+
 def add_center_label(layout, text, props={}):
     txt = QtWidgets.QLabel()
     set_text(txt, text)

@@ -10,7 +10,7 @@ text_props = {
 text_hack_props = {**text_props, 'font-family': 'Hack'}
 text_fa_props = {**text_props, 'font-family': 'FontAwesome'}
 
-panel_bg = 'transparent'
+panel_bg = '#282936' # 'transparent'
 signal_levels = ['#c42f2f', '#9e3a3a', '#bc5b40', '#7f8432',
                  '#658432', '#33874c'] # low to high
 battery_icons = ['&#xf243;', '&#xf242;', '&#xf241;', '&#xf240;'] # 25-100%
@@ -24,6 +24,8 @@ def render_loop_delay():
 
 def config(panel, layout, ui):
     panel.setStyleSheet('background-color: %s; border: none;' % (panel_bg))
+    # ui.add_image(layout, './res/ubuntu-logo.svg', 300)
+    # layout.addStretch(1)
     append_network(layout, ui)
     layout.addStretch(1)
     append_date_time(layout, ui)
