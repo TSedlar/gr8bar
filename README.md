@@ -1,7 +1,7 @@
 # gr8bar
 A cross-platform status bar made with Qt5
 
-![](res/example-bar.png)
+![](res/md/example-bar.png)
 
 ## Prerequisites 
 

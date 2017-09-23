@@ -24,8 +24,6 @@ def render_loop_delay():
 
 def config(panel, layout, ui):
     panel.setStyleSheet('background-color: %s; border: none;' % (panel_bg))
-    # ui.add_image(layout, './res/ubuntu-logo.svg', 300)
-    # layout.addStretch(1)
     append_network(layout, ui)
     layout.addStretch(1)
     append_date_time(layout, ui)
