@@ -1,7 +1,7 @@
 panel_bg = 'transparent'
 panel_border = 'none'
-real_panel_bg = '#000000'
-icon_color = '#ea1646'
+real_panel_bg = '#201c2d'
+icon_color = '#c36450'
 
 text_props = {
     'color': icon_color,

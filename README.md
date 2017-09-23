@@ -2,6 +2,7 @@
 A cross-platform status bar made with Qt5
 
 ![](res/md/example-bar.png)
+![](res/md/example-bar2.png)
 
 ## Prerequisites 
 
