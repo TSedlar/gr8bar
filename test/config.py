@@ -75,9 +75,22 @@ def append_battery(layout, ui):
         'css': {**text_fa_props, 'background-color': battery_levels[level]}
     })
     # render battery %
-    ui.add_center_label(layout, "%s%% " % (cap), {
+    label = ui.add_center_label(layout, "%s%% " % (cap), {
         'css': {**text_hack_props, 'background-color': '#33874c'}
     })
+
+    full = int(term('cat /sys/class/power_supply/BAT0/charge_full'))
+    now = int(term('cat /sys/class/power_supply/BAT0/charge_now'))
+    amps = int(term('cat /sys/class/power_supply/BAT0/current_now'))
+
+    full_time = float(full) / amps
+    now_time = float(now) / amps
+
+    remaining = (now_time - (full_time - now_time))
+    hours = int(remaining)
+    mins = int(((remaining - hours)) * 60)
+
+    ui.set_hover_text(label, '%s:%s &#xf017; ' % (hours, mins))
 
 def append_power(layout, ui):
     # render power-off symbol
