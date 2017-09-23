@@ -4,7 +4,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 def add_center_label(layout, text, props={}):
-    txt = QtWidgets.QLabel(html.unescape(text))
+    txt = QtWidgets.QLabel()
+    set_text(txt, text)
     if 'width' in props:
         txt.setFixedWidth(props['width'])
     if 'css' in props:
@@ -26,6 +27,17 @@ def add_hover_event(widget, enter_callback, leave_callback):
     widget.setMouseTracking(True)
     widget.enterEvent = enter_callback
     widget.leaveEvent = leave_callback
+
+
+def set_hover_text(label, hover_text):
+    text = label.text()
+    enter_func = lambda _: set_text(label, hover_text)
+    exit_func = lambda _: set_text(label, text)
+    add_hover_event(label, enter_func, exit_func)
+
+
+def set_text(label, text):
+    label.setText(html.unescape(text))
 
 
 def to_sheet(dictionary):

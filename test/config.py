@@ -52,10 +52,14 @@ def append_network(layout, ui):
 def append_date_time(layout, ui):
     # render date & time
     _date = time.strftime('%m/%d/%Y')
-    _time = time.strftime('%H:%M %p')
-    ui.add_center_label(layout, '   %s &#xf07e; %s   ' % (_date, _time), {
+    _time = time.strftime('%I:%M %p')
+    text = '   %s &#xf07e; %s   ' % (_date, _time)
+    hover_text = '  Today is %s  ' % (time.strftime('%A'))
+    label = ui.add_center_label(layout, text, {
         'css': {**text_hack_props, 'background-color': '#684c70'}
     })
+    ui.set_hover_text(label, hover_text)
+
 
 def append_battery(layout, ui):
     # render bolt if charging
