@@ -1,6 +1,14 @@
+import os
 import html
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+cdir = os.path.dirname(__file__)
+
+
+def res(file):
+    return os.path.join(cdir, file)
 
 
 def add_image(layout, image, padding_width=0):
@@ -15,13 +23,14 @@ def add_image(layout, image, padding_width=0):
 
 def add_slant(layout, type, color):
     label = QtWidgets.QLabel()
-    pixmap = QtGui.QPixmap('./res/slant-%s.svg' % (type))
+    pixmap = QtGui.QPixmap(res('../res/slant-%s.svg') % (type))
     recolor_pixmap(pixmap, color)
     label.setPixmap(pixmap)
     label.setFixedWidth(pixmap.width())
     label.setAlignment(QtCore.Qt.AlignCenter)
     layout.addWidget(label)
     return label
+
 
 def add_center_label(layout, text, props={}):
     txt = QtWidgets.QLabel()
@@ -49,14 +58,21 @@ def add_hover_event(widget, enter_callback, leave_callback):
     widget.leaveEvent = leave_callback
 
 
-def set_hover_text(label, hover_text):
-    text = label.text()
-    enter_func = lambda _: set_text(label, hover_text)
-    exit_func = lambda _: set_text(label, text)
+def add_label_hover(label, text, hover_callable, props, key):
+    set_text(label, props[key] if key in props else text)
+    def enter_func(_):
+        hover_text = hover_callable()
+        set_text(label, hover_text)
+        props[key] = hover_text
+    def exit_func(_):
+        set_text(label, text)
+        props[key] = text
     add_hover_event(label, enter_func, exit_func)
 
 
 def set_text(label, text):
+    if text is None:
+        text = ''
     label.setText(html.unescape(text))
 
 
@@ -78,6 +94,7 @@ def recolor_pixmap(pixmap, hex):
 def append_css(widget, css):
     widget.setStyleSheet(widget.styleSheet() + css)
 
+
 def _to_sheet(dictionary):
     src = ''
     for key, value in dictionary.items():
@@ -94,4 +111,4 @@ def _to_qcol(hex):
 
 def _hex_to_rgb(hex):
     hex = hex.lstrip('#')
-    return tuple(int(hex[i:i + 2], 16) for i in (0, 2 ,4))
+    return tuple(int(hex[i:i + 2], 16) for i in (0, 2, 4))

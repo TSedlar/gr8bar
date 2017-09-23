@@ -24,6 +24,8 @@ window_layout = QtWidgets.QHBoxLayout(window)
 window_layout.setContentsMargins(0, 0, 0, 0)
 window_layout.setSpacing(0)
 
+properties = {}
+
 
 def clearLayout(layout):
     while layout.count():
@@ -34,7 +36,7 @@ def clearLayout(layout):
 
 def render():
     clearLayout(window_layout)
-    cfg.config(window, window_layout, ui)
+    cfg.config(window, window_layout, ui, properties)
 
     window.ensurePolished()
 
@@ -45,6 +47,7 @@ def render():
 
 
 if __name__ == "__main__":
+    cfg.init(properties)
     timer = QtCore.QTimer()
     timer.timeout.connect(render)
     timer.start(cfg.render_loop_delay())

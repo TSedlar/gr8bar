@@ -19,7 +19,11 @@ def render_loop_delay():
     return 1000
 
 
-def config(panel, layout, ui):
+def init(props):
+    pass
+
+
+def config(panel, layout, ui, props):
     ui.set_bg(panel, panel_bg)
     ui.set_border(panel, panel_border)
     render_logo(layout, ui)
@@ -85,6 +89,7 @@ def render_mem(layout, ui):
     })
     ui.add_slant(layout, 'rd', real_panel_bg)
 
+
 def render_time(layout, ui):
     ui.add_slant(layout, 'lui', real_panel_bg)
     ui.add_center_label(layout, '&#xf073;', { # calendar
@@ -137,7 +142,6 @@ def render_network(layout, ui):
         'css': {**text_props}
     })
     ui.add_slant(layout, 'rd', real_panel_bg)
-
 
 
 def render_volume(layout, ui):

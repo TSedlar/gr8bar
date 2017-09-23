@@ -3,7 +3,7 @@ import math
 import time
 
 text_props = {
-    'color': '#c2c2c2'
+    'color': '#c2c2c2',
     'font-size': '14px',
     'font-family': 'Hack, FontAwesome'
 }
@@ -17,10 +17,16 @@ battery_levels = ['#9e3a3a', '#595959', '#33874c'] # low, med, high
 def bounds():
     return {'x': 65, 'y': 15, 'w': 1791, 'h': 34}
 
+
 def render_loop_delay():
     return 1000
 
-def config(panel, layout, ui):
+
+def init(props):
+    pass
+
+
+def config(panel, layout, ui, props):
     panel.set_bg(panel_bg)
     panel.set_border('none')
     append_network(layout, ui)
@@ -29,6 +35,7 @@ def config(panel, layout, ui):
     layout.addStretch(1)
     append_battery(layout, ui)
     append_power(layout, ui)
+
 
 def append_network(layout, ui):
     # parse dbm for network strength color
@@ -47,6 +54,7 @@ def append_network(layout, ui):
         'width': 80,
         'css': {**text_props, 'background-color': '#3b7389'}
     })
+
 
 def append_date_time(layout, ui):
     # render date & time
@@ -91,13 +99,15 @@ def append_battery(layout, ui):
 
     ui.set_hover_text(label, '%s:%s &#xf017; ' % (hours, mins))
 
+
 def append_power(layout, ui):
     # render power-off symbol
     ui.add_center_label(layout, '  &#xf011;  ', {
         'css': {**text_props, 'background-color': '#9e3a3a'}
     })
 
+
 def term(command):
-    result = run(command, stdout=PIPE, stderr=PIPE, 
+    result = run(command, stdout=PIPE, stderr=PIPE,
                  universal_newlines=True, shell=True)
     return result.stdout.strip()
