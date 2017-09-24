@@ -186,7 +186,8 @@ def render_battery(data):
 
 def render_power(data):
     data.ui.add_slant(data.layout, 'lui', real_panel_bg)
-    data.ui.add_center_label(data.layout, ' &#xf011; ', text_css) # power
+    lbl = data.ui.add_center_label(data.layout, ' &#xf011; ', text_css) # power
+    data.ui.add_click_event(lbl, lambda _: data.tools.term('pkill -u $USER'))
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
 # Update functions below
