@@ -59,7 +59,7 @@ def run_updater(updater, tools, properties):
 
 
 if __name__ == "__main__":
-    updaters = cfg.init_prop_updaters(tools, properties)
+    updaters = cfg.init_prop_updaters()
     for updater in updaters:
         threading.Thread(target=run_updater, 
                          args=(updater, tools, properties,)).start()
