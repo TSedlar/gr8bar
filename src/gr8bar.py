@@ -1,9 +1,13 @@
 import os
 import sys
+import threading
+import time
+import types
 
 from PyQt5 import QtCore, QtWidgets
 
 import ui
+import tools
 
 sys.path.append(os.path.dirname(sys.argv[1]))
 cfg = __import__(os.path.basename(sys.argv[1].replace('.py', '')))
@@ -26,6 +30,8 @@ window_layout.setSpacing(0)
 
 properties = {}
 
+data = types.SimpleNamespace(panel=window, layout=window_layout, ui=ui,
+                             tools=tools, props=properties)
 
 def clearLayout(layout):
     while layout.count():
@@ -36,7 +42,7 @@ def clearLayout(layout):
 
 def render():
     clearLayout(window_layout)
-    cfg.config(window, window_layout, ui, properties)
+    cfg.config(data)
 
     window.ensurePolished()
 
@@ -46,8 +52,17 @@ def render():
         window.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
 
 
+def run_updater(updater, tools, properties):
+    while True:
+        updater[0](tools, properties)
+        time.sleep(updater[1])
+
+
 if __name__ == "__main__":
-    cfg.init(properties)
+    updaters = cfg.init_prop_updaters(tools, properties)
+    for updater in updaters:
+        threading.Thread(target=run_updater, 
+                         args=(updater, tools, properties,)).start()
     timer = QtCore.QTimer()
     timer.timeout.connect(render)
     timer.start(cfg.render_loop_delay())

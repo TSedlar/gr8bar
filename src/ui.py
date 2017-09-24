@@ -3,17 +3,13 @@ import html
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
-cdir = os.path.dirname(__file__)
-
-
-def res(file):
-    return os.path.join(cdir, file)
+def res(py_file, file):
+    return os.path.join(os.path.dirname(py_file), file)
 
 
-def add_image(layout, image, padding_width=0):
+def add_image(layout, file_path, image_path, padding_width=0):
     label = QtWidgets.QLabel()
-    pixmap = QtGui.QPixmap(image)
+    pixmap = QtGui.QPixmap(res(file_path, image_path))
     label.setPixmap(pixmap)
     label.setFixedWidth(pixmap.width() + padding_width)
     label.setAlignment(QtCore.Qt.AlignCenter)
@@ -23,7 +19,7 @@ def add_image(layout, image, padding_width=0):
 
 def add_slant(layout, type, color):
     label = QtWidgets.QLabel()
-    pixmap = QtGui.QPixmap(res('../res/slant-%s.svg') % (type))
+    pixmap = QtGui.QPixmap(res(__file__, '../res/slant-%s.svg') % (type))
     recolor_pixmap(pixmap, color)
     label.setPixmap(pixmap)
     label.setFixedWidth(pixmap.width())
