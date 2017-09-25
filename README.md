@@ -20,6 +20,4 @@ python3 ./src/gr8bar.by ./test/config.py
 ```
 
 ## TODO
-- Inline options
-- Stateful labels
-- Easy shell commands
+- Allow layout to be changed (QVBoxLayout vs QHBoxLayout)
