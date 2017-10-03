@@ -34,6 +34,10 @@ data = types.SimpleNamespace(panel=window, layout=window_layout, ui=ui,
                              tools=tools, props=properties)
 
 def clearLayout(layout):
+    '''
+    Removes the children from the given layout
+    :param layout: The layout to remove from
+    '''
     while layout.count():
         child = layout.takeAt(0)
         if child.widget():
@@ -41,6 +45,9 @@ def clearLayout(layout):
 
 
 def render():
+    '''
+    Renders the bar from the given configuration file
+    '''
     clearLayout(window_layout)
     cfg.config(data)
 
@@ -53,6 +60,12 @@ def render():
 
 
 def run_updater(updater, tools, properties):
+    '''
+    Runs an updater with the fed tools and properties
+    :param updater: The updater to run
+    :param tools: The tools api wrapper
+    :param properties: The properties that the updater maintains
+    '''
     while True:
         updater[0](tools, properties)
         time.sleep(updater[1])
