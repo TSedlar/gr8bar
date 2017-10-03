@@ -99,6 +99,7 @@ def render_mem(data):
     data.ui.add_center_label(data.layout, ' %sMB ' % (mem), text_css)
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
+
 def render_time(data):
     _date = data.tools.time_fmt('%m/%d/%Y')
     _time = data.tools.time_fmt('%I:%M %p')
@@ -106,9 +107,9 @@ def render_time(data):
     def date_hov_txt():
         return ' %s ' % (data.tools.time_fmt('%A'))
 
-    data.ui.add_slant(data.layout, 'lui', real_panel_bg)
-    data.ui.add_center_label(data.layout, '&#xf073;', text_css) # calendar
-    data.ui.add_slant(data.layout, 'ru', real_panel_bg)
+    data.ui.add_slant(data.layout, 'lui', real_panel_bg),
+    data.ui.add_center_label(data.layout, '&#xf073;', text_css), # calendar
+    data.ui.add_slant(data.layout, 'ru', real_panel_bg),
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
     date_label = data.ui.add_center_label(data.layout, None, text_css)

@@ -81,9 +81,11 @@ def render_mem(data):
 
 
 def render_time(data):
-    data.ui.add_slant(data.layout, 'lui', real_panel_bg)
-    data.ui.add_center_label(data.layout, '&#xf073;', text_css) # calendar
-    data.ui.add_slant(data.layout, 'ru', real_panel_bg)
+    # data.tools.multi_apply(lambda x: data.ui.add_border_line(x, '#FFFFFF', 4), (
+    data.ui.add_slant(data.layout, 'lui', real_panel_bg),
+    data.ui.add_center_label(data.layout, '&#xf073;', text_css), # calendar
+    data.ui.add_slant(data.layout, 'ru', real_panel_bg),
+    # ))
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
     data.ui.add_center_label(data.layout, ' 9/23/2017 ', text_css)
