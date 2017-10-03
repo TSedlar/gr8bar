@@ -34,3 +34,13 @@ def term(command):
     result = run(command, stdout=PIPE, stderr=PIPE,
                  universal_newlines=True, shell=True)
     return result.stdout.strip()
+
+
+def multi_apply(func, args):
+    '''
+    Applies the given function over a tuple of arguments
+    :param func: The function/lambda to execute
+    :param args: The tuple of arguments to execute the function over
+    '''
+    for arg in args:
+        func(arg)

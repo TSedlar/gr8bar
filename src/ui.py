@@ -151,6 +151,36 @@ def recolor_pixmap(pixmap, hex):
     painter.end()
 
 
+def add_paint_event(widget, new_event, include_old=True):
+    '''
+    Overrides the QWidget#paintEvent method to append the given event
+    :param widget: The widget to paint on
+    :param new_event: The new event to render, includes one event parameter
+    :param include_old: Also pre-render the old paintEvent, true by default
+    '''
+    old_event = widget.paintEvent
+    def override_paint_event(evt):
+        if include_old:
+            old_event(evt)
+        new_event(evt)
+    widget.paintEvent = override_paint_event
+
+
+def add_border_line(widget, hex, height, bottom=True):
+    '''
+    Renders a border with the given arguments
+    :param widget: The widget to add a border to
+    :param hex: The color to render the border as
+    :param height: The height of the border
+    :param bottom: True to render at the bottom, False to render at the top.
+    '''
+    def paint_border_line(evt):
+        y_pos = widget.height() - height if bottom else 0
+        painter = QtGui.QPainter(widget)
+        painter.setCompositionMode(painter.CompositionMode_SourceIn)
+        painter.fillRect(0, y_pos, widget.width(), height, _to_qcol(hex))
+    add_paint_event(widget, paint_border_line)
+
 def append_css(widget, css):
     '''
     Appends css to the given widget
