@@ -12,6 +12,63 @@ def res(py_file, file):
     return os.path.join(os.path.dirname(py_file), file)
 
 
+def toggle(widget):
+    '''
+    Toggles widget visibilitiy
+    :param widget: The widget to hide or show
+    '''
+    if widget.isVisible():
+        widget.hide()
+    else:
+        widget.show()
+
+
+def create_popup(width, height, hex_bg):
+    '''
+    Creates a blank popup window with the given arguments
+    :param width: The width of the popup
+    :param height: The height of the popup
+    :param hex_bg: The background color of the popup
+    '''
+    window = QtWidgets.QWidget()
+    window.setWindowFlags(QtCore.Qt.Dialog | QtCore.Qt.FramelessWindowHint |
+                        QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.Tool |
+                        QtCore.Qt.X11BypassWindowManagerHint)
+    window.setFixedSize(width, height)
+
+    set_bg(window, hex_bg)
+    set_border(window, hex_bg)
+    if hex_bg == 'transparent':
+        window.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        window.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
+    window_layout = QtWidgets.QHBoxLayout(window)
+    window_layout.setContentsMargins(0, 0, 0, 0)
+    window_layout.setSpacing(0)
+    return window
+
+
+def add_click_popup(parent, popup, alignment='center', offset=(0, 15)):
+    '''
+    Makes the given popup appear near the parent when the parent is clicked
+    :param parent: The parent widget that the popup should be paired with
+    :param popup: The popup to use
+    :param alignment: The alignment of the popup (left, center, right)
+    :param offset: An (x, y) tuple used for popup offset -- (0, 30) default
+    '''
+    def callback(evt):
+        toggle(popup)
+        pt = parent.mapToGlobal(QtCore.QPoint(0, 0)) # absolute position
+        x = pt.x()
+        if alignment == 'center':
+            x += (parent.width() / 2) - (popup.width() / 2)
+        elif alignment == 'right':
+            x -= (popup.width() - parent.width())
+        x += offset[0]
+        y = (pt.y() + parent.height() + offset[1])
+        popup.move(x, y)
+    add_click_event(parent, callback)
+
+
 def add_image(layout, file_path, image_path, padding_width=0):
     '''
     Appends an image to the layout

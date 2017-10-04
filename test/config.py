@@ -1,10 +1,13 @@
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
 panel_bg = 'transparent'
 panel_border = 'none'
 real_panel_bg = '#232631'
 icon_color = '#e6e6e6'
 
 text_css = {
-    'css':{
+    'css': {
         'color': icon_color,
         'background-color': real_panel_bg,
         'font-size': '14px',
@@ -79,12 +82,15 @@ def render_mem(data):
     data.ui.add_center_label(data.layout, ' 786mb ', text_css)
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
-
 def render_time(data):
+    # if not 'cal_window' in data.props:
+    #     window = data.ui.create_popup(300, 100, '#ff0000')
+    #     data.props['cal_window'] = window
     # data.tools.multi_apply(lambda x: data.ui.add_border_line(x, '#FFFFFF', 4), (
-    data.ui.add_slant(data.layout, 'lui', real_panel_bg),
-    data.ui.add_center_label(data.layout, '&#xf073;', text_css), # calendar
-    data.ui.add_slant(data.layout, 'ru', real_panel_bg),
+    data.ui.add_slant(data.layout, 'lui', real_panel_bg)
+    cal = data.ui.add_center_label(data.layout, '&#xf073;', text_css) # calendar
+    data.ui.add_slant(data.layout, 'ru', real_panel_bg)
+    # data.ui.add_click_popup(cal, data.props['cal_window'], 'right')
     # ))
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
