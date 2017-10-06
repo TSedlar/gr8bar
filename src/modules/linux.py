@@ -63,7 +63,8 @@ def get_workspace():
     '''
     Gets the current workspace number
     '''
-    return tools.term('xprop -root _NET_CURRENT_DESKTOP | grep -o "[0-9]*"')
+    workspace = tools.term('xprop -root _NET_CURRENT_DESKTOP | grep -o "[0-9]*"')
+    return int(workspace) if len(workspace) else 0
 
 
 def get_user():

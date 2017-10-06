@@ -20,7 +20,7 @@ def get_weather(zip_code):
     query = 'q=select wind.chill from weather.forecast where woeid in ' \
             '(select woeid from geo.places(1) where text="%s")&format=json'
     query_url = yql_api + (query % (zip_code)).replace(' ', '%20')
-    json = term('curl "%s"' % (query_url))
+    json = load_json(term('curl "%s"' % (query_url)))
     return json['query']['results']['channel']['wind']['chill']
 
 
