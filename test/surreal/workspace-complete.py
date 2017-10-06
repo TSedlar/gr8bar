@@ -1,5 +1,3 @@
-import os
-
 panel_bg = 'transparent'
 panel_border = 'none'
 
@@ -17,6 +15,7 @@ text_css = {
     }
 }
 
+key_workspace = 'workspace_number'
 key_window_title = 'window_title'
 key_user = 'sys_user'
 
@@ -29,7 +28,8 @@ def render_loop_delay():
 
 
 def init_prop_updaters():
-    return [(update_window_title, 1.5), (update_welcome, 60)]
+    return [(update_workspace, 1), (update_window_title, 1.5),
+            (update_welcome, 60)]
 
 
 def config(data):
@@ -42,7 +42,7 @@ def config(data):
     render_welcome(data)
 
 def render_workspace(data):
-    workspace = data.tools.x_workspace()
+    workspace = data.props.get(key_workspace, 1)
     #                     code         term       notes       busy
     workspace_labels = ['&#xf121;', '&#xf120;', '&#xf040;', '&#xf009;']
     # render all workspaces with their respective labels
@@ -69,7 +69,7 @@ def render_workspace(data):
 
 
 def render_window_title(data):
-    window_title = data.props.get(key_window_title, os.name)
+    window_title = data.props.get(key_window_title, data.os.name)
     if len(window_title) > 130:
         window_title = window_title[:130] + '...'
 
@@ -90,9 +90,13 @@ def render_welcome(data):
 
 # Update functions below
 
-def update_window_title(tools, props):
-    props[key_window_title] = tools.term('xdotool getwindowfocus getwindowname')
+def update_workspace(tools, modules, props):
+    props[key_workspace] = modules.linux.get_workspace()
 
 
-def update_welcome(tools, props):
-    props[key_user] = tools.term('id -u -n')
+def update_window_title(tools, modules, props):
+    props[key_window_title] = modules.linux.get_active_window_name()
+
+
+def update_welcome(tools, modules, props):
+    props[key_user] = modules.linux.get_user()

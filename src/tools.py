@@ -11,19 +11,25 @@ def time_fmt(fmt):
     return time.strftime(fmt)
 
 
+def get_weather(zip_code):
+    '''
+    Gets the current weather temperature for the given zip code
+    :param zip_code: The zip code of the area to query at
+    '''
+    yql_api = 'https://query.yahooapis.com/v1/public/yql?'
+    query = 'q=select wind.chill from weather.forecast where woeid in ' \
+            '(select woeid from geo.places(1) where text="%s")&format=json'
+    query_url = yql_api + (query % (zip_code)).replace(' ', '%20')
+    json = term('curl "%s"' % (query_url))
+    return json['query']['results']['channel']['wind']['chill']
+
+
 def load_json(json_data):
     '''
     A json.loads alias
     :param json_data: The json string to load
     '''
     return json.loads(json_data)
-
-
-def x_workspace():
-    '''
-    Retrieves the current workspace number using xprop
-    '''
-    return int(term('xprop -root _NET_CURRENT_DESKTOP | grep -o "[0-9]*"'))
 
 
 def term(command):

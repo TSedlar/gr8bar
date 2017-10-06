@@ -6,8 +6,10 @@ import types
 
 from PyQt5 import QtCore, QtWidgets
 
+from modules import linux, gallium_os
 import ui
 import tools
+
 
 sys.path.append(os.path.dirname(sys.argv[1]))
 cfg = __import__(os.path.basename(sys.argv[1].replace('.py', '')))
@@ -30,8 +32,11 @@ window_layout.setSpacing(0)
 
 properties = {}
 
-data = types.SimpleNamespace(panel=window, layout=window_layout, ui=ui,
-                             tools=tools, props=properties)
+modules = types.SimpleNamespace(linux=linux, gallium_os=gallium_os)
+
+data = types.SimpleNamespace(panel=window, layout=window_layout, ui=ui, os=os,
+                             tools=tools, props=properties, modules=modules)
+
 
 def clearLayout(layout):
     '''
@@ -59,7 +64,7 @@ def render():
         window.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
 
 
-def run_updater(updater, tools, properties):
+def run_updater(updater, tools, modules, properties):
     '''
     Runs an updater with the fed tools and properties
     :param updater: The updater to run
@@ -67,15 +72,15 @@ def run_updater(updater, tools, properties):
     :param properties: The properties that the updater maintains
     '''
     while True:
-        updater[0](tools, properties)
+        updater[0](tools, modules, properties)
         time.sleep(updater[1])
 
 
 if __name__ == "__main__":
     updaters = cfg.init_prop_updaters()
     for updater in updaters:
-        threading.Thread(target=run_updater, 
-                         args=(updater, tools, properties,)).start()
+        threading.Thread(target=run_updater,
+                         args=(updater, tools, modules, properties,)).start()
     timer = QtCore.QTimer()
     timer.timeout.connect(render)
     timer.start(cfg.render_loop_delay())

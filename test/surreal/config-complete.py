@@ -188,53 +188,32 @@ def render_battery(data):
 def render_power(data):
     data.ui.add_slant(data.layout, 'lui', real_panel_bg)
     lbl = data.ui.add_center_label(data.layout, ' &#xf011; ', text_css) # power
-    data.ui.add_click_event(lbl, lambda _: data.tools.term('pkill -u $USER'))
+    data.ui.add_click_event(lbl, lambda _: data.modules.linux.logout())
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
 # Update functions below
 
-def update_cpu(tools, props):
-    cpu_percent = tools.term("vmstat 1 2 | tail -1 | awk '{print 100-$15}'")
-    temp_str = tools.term('cat /sys/class/thermal/thermal_zone0/temp')
-    cpu_temp = int((int(temp_str) if len(temp_str) else -1000) / 1000)
-
-    props[key_cpu_percent] = cpu_percent
-    props[key_cpu_temp] = cpu_temp
+def update_cpu(tools, modules, props):
+    props[key_cpu_percent] = modules.linux.get_cpu_percent()
+    props[key_cpu_temp] = modules.linux.get_cpu_temp()
 
 
-def update_mem(tools, props):
-    mem = tools.term("free -m | grep 'Mem:' | awk '{print $6}'")
-
-    props[key_mem_used] = mem
+def update_mem(tools, modules, props):
+    props[key_mem_used] = modules.linux.get_mem_used()
 
 
-def update_weather(tools, props):
-    yql_api = 'https://query.yahooapis.com/v1/public/yql?'
-    query = 'q=select wind.chill from weather.forecast where woeid in ' \
-            '(select woeid from geo.places(1) where text="%s")&format=json'
-    query_url = yql_api + (query % (zip_code)).replace(' ', '%20')
-    json = tools.load_json(tools.term('curl "%s"' % (query_url)))
-
-    props[key_weather_temp] = json['query']['results']['channel']['wind']['chill']
+def update_weather(tools, modules, props):
+    props[key_weather_temp] = tools.get_weather(zip_code)
 
 
-def update_network(tools, props):
-    ssid = tools.term("iwgetid -r")
-
-    props[key_network_ssid] = ssid
+def update_network(tools, modules, props):
+    props[key_network_ssid] = modules.linux.get_network_ssid()
 
 
-def update_volume(tools, props):
-    vol = tools.term("amixer get Master | grep % | awk '{print $4}'" +
-                     " | sed -e 's/\[//' -e 's/\]//'")
-
-    props[key_volume] = vol
+def update_volume(tools, modules, props):
+    props[key_volume] = modules.gallium_os.get_volume_level()
 
 
-def update_battery(tools, props):
-    cap_str = tools.term('cat /sys/class/power_supply/BAT0/capacity')
-    cap = int(cap_str) if len(cap_str) else -1
-    state = tools.term('cat /sys/class/power_supply/BAT0/status')
-
-    props[key_battery_cap] = cap
-    props[key_battery_state] = state
+def update_battery(tools, modules, props):
+    props[key_battery_cap] = modules.linux.get_battery_capacity()
+    props[key_battery_state] = modules.linux.get_battery_state()

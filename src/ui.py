@@ -32,8 +32,8 @@ def create_popup(width, height, hex_bg):
     '''
     window = QtWidgets.QWidget()
     window.setWindowFlags(QtCore.Qt.Dialog | QtCore.Qt.FramelessWindowHint |
-                        QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.Tool |
-                        QtCore.Qt.X11BypassWindowManagerHint)
+                          QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.Tool |
+                          QtCore.Qt.X11BypassWindowManagerHint)
     window.setFixedSize(width, height)
 
     set_bg(window, hex_bg)
@@ -55,7 +55,7 @@ def add_click_popup(parent, popup, alignment='center', offset=(0, 15)):
     :param alignment: The alignment of the popup (left, center, right)
     :param offset: An (x, y) tuple used for popup offset -- (0, 30) default
     '''
-    def callback(evt):
+    def callback(_):
         toggle(popup)
         pt = parent.mapToGlobal(QtCore.QPoint(0, 0)) # absolute position
         x = pt.x()
@@ -90,7 +90,7 @@ def add_slant(layout, slant_type, color):
     '''
     Appends a slant to the bar
     :param layout: The layout to append to
-    :param slant_type: The type of slant (lu = left-up, ld = left-down, 
+    :param slant_type: The type of slant (lu = left-up, ld = left-down,
                  lui = left-up-inverted, ru = right-up, etc.)
     :param color: The hex-color that this slant should render as
     '''
@@ -231,7 +231,7 @@ def add_border_line(widget, hex, height, bottom=True):
     :param height: The height of the border
     :param bottom: True to render at the bottom, False to render at the top.
     '''
-    def paint_border_line(evt):
+    def paint_border_line(_):
         y_pos = widget.height() - height if bottom else 0
         painter = QtGui.QPainter(widget)
         painter.setCompositionMode(painter.CompositionMode_SourceIn)

@@ -13,7 +13,7 @@ extension-pkg-whitelist=PyQt5
 # can either give multiple identifier separated by comma (,) or put this option
 # multiple time (only on the command line, not in the configuration file where
 # it should appear only once).
-disable=W0102,C0103,C0111,C1801
+disable=W0102,C0103,C0111,C1801,W0621,W0622,W0106,W0613
 
 # Good variable names which should always be accepted, separated by a comma
 good-names=i,j,k,ex,Run,_,pk,x,y,ui
