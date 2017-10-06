@@ -28,7 +28,7 @@ def render_loop_delay():
 
 
 def init_prop_updaters():
-    return [(update_workspace, 1), (update_window_title, 1.5),
+    return [(update_workspace, 0.05), (update_window_title, 1.5),
             (update_welcome, 60)]
 
 
@@ -42,7 +42,7 @@ def config(data):
     render_welcome(data)
 
 def render_workspace(data):
-    workspace = data.props.get(key_workspace, 1)
+    workspace = data.props.get(key_workspace, 0)
     #                     code         term       notes       busy
     workspace_labels = ['&#xf121;', '&#xf120;', '&#xf040;', '&#xf009;']
     # render all workspaces with their respective labels

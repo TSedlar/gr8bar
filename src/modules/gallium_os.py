@@ -5,7 +5,7 @@ def get_volume_level():
     '''
     Gets the current volume level
     '''
-    return tools.term("awk -F'[][]' '/dB/ { print $2 }' <(amixer sget DAC1)")
+    return tools.term('amixer sget DAC1 | egrep -o "[0-9]+%" | head -1')
 
 
 def increment_volume(percent):
