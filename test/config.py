@@ -1,6 +1,3 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-
-
 panel_bg = 'transparent'
 panel_border = 'none'
 real_panel_bg = '#232631'

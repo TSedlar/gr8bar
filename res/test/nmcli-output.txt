@@ -1,0 +1,9 @@
+*  SSID                         MODE   CHAN  RATE       SIGNAL  BARS  SECURITY  
+   CentHub                      Infra  1     54 Mbit/s  100     ▂▄▆█  WPA2      
+*  CentHub                      Infra  36    54 Mbit/s  67      ▂▄▆_  WPA2      
+   DIRECT-55-HP OfficeJet 4650  Infra  6     54 Mbit/s  49      ▂▄__  WPA2      
+   IWATCHYOUSLEEP               Infra  11    54 Mbit/s  45      ▂▄__  WPA1 WPA2 
+   ASUS                         Infra  6     54 Mbit/s  40      ▂▄__  WPA2      
+   IWATCHYOUSLEEP_5G            Infra  44    54 Mbit/s  34      ▂▄__  WPA1 WPA2 
+   KIAH & SAWYER                Infra  6     54 Mbit/s  32      ▂▄__  WPA2      
+   ASUS_5G-2                    Infra  153   54 Mbit/s  12      ▂___  WPA2  

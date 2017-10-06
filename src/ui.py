@@ -69,7 +69,7 @@ def add_click_popup(parent, popup, alignment='center', offset=(0, 15)):
     add_click_event(parent, callback)
 
 
-def add_image(layout, file_path, image_path, padding_width=0):
+def add_image(layout, file_path, image_path, padding_width=0, overlay=None):
     '''
     Appends an image to the layout
     :param layout: The layout to append to
@@ -79,6 +79,8 @@ def add_image(layout, file_path, image_path, padding_width=0):
     '''
     label = QtWidgets.QLabel()
     pixmap = QtGui.QPixmap(res(file_path, image_path))
+    if overlay is not None:
+        recolor_pixmap(pixmap, overlay)
     label.setPixmap(pixmap)
     label.setFixedWidth(pixmap.width() + padding_width)
     label.setAlignment(QtCore.Qt.AlignCenter)
@@ -145,6 +147,17 @@ def add_hover_event(widget, enter_callback, leave_callback):
     widget.setMouseTracking(True)
     widget.enterEvent = enter_callback
     widget.leaveEvent = leave_callback
+
+def show_hover(label, off_bg, on_bg, props, key):
+    if key in props:
+        set_bg(label, props[key])
+    def enter_func(_):
+        set_bg(label, on_bg)
+        props[key] = on_bg
+    def exit_func(_):
+        set_bg(label, off_bg)
+        props[key] = off_bg
+    add_hover_event(label, enter_func, exit_func)
 
 
 def add_label_hover(label, text, hover_callable, props, key):
@@ -256,7 +269,7 @@ def _to_sheet(dictionary):
     for key, value in dictionary.items():
         if len(src):
             src += '\n'
-        src += (key + ': ' + value + ';')
+        src += '%s: %s;' % (key, value)
     return src
 
 

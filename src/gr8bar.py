@@ -6,7 +6,7 @@ import types
 
 from PyQt5 import QtCore, QtWidgets
 
-from modules import linux, gallium_os
+from modules import network, linux, gallium_os
 import ui
 import tools
 
@@ -32,7 +32,8 @@ window_layout.setSpacing(0)
 
 properties = {}
 
-modules = types.SimpleNamespace(linux=linux, gallium_os=gallium_os)
+modules = types.SimpleNamespace(network=network, linux=linux,
+                                gallium_os=gallium_os)
 
 data = types.SimpleNamespace(panel=window, layout=window_layout, ui=ui, os=os,
                              tools=tools, props=properties, modules=modules)
