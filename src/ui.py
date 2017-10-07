@@ -23,7 +23,7 @@ def toggle(widget):
         widget.show()
 
 
-def clearLayout(layout):
+def clear_layout(layout):
     '''
     Removes the children from the given layout
     :param layout: The layout to remove from
@@ -160,7 +160,7 @@ def add_label(layout, text, props={}):
     if 'width' in props:
         txt.setFixedWidth(props['width'])
     if 'css' in props:
-        txt.setStyleSheet(_to_sheet(props['css']))
+        txt.setStyleSheet(dict_to_sheet(props['css']))
         if 'font-family' in props['css'] and 'font-size' in props['css']:
             family = props['css']['font-family']
             size = int(props['css']['font-size'].replace('px', ''))
@@ -222,7 +222,44 @@ def add_hover_event(widget, enter_callback, leave_callback):
     widget.enterEvent = override_enter_event
     widget.leaveEvent = override_leave_event
 
+
+def add_hide_event(widget, callback):
+    '''
+    Adds an event listener for when the given widget is hidden
+    :param widget: The widget to listen for
+    :param callback: The callback to execute when the widget is hidden
+    '''
+    old_event = widget.hideEvent
+    def override_event(evt):
+        old_event(evt)
+        if callback:
+            callback(evt)
+    widget.hideEvent = override_event
+
+
+def add_show_event(widget, callback):
+    '''
+    Adds an event listener for when the given widget is hidden
+    :param widget: The widget to listen for
+    :param callback: The callback to execute when the widget is hidden
+    '''
+    old_event = widget.showEvent
+    def override_event(evt):
+        old_event(evt)
+        if callback:
+            callback(evt)
+    widget.showEvent = override_event
+
+
 def show_hover(label, off_bg, on_bg, props, key):
+    '''
+    Displays the given label's background as the respective color when hovered
+    :param label: The label to set the background of
+    :param off_bg: The background color when not hovered
+    :param on_bg: The background color when hovered
+    :param props: The properties of the label
+    :param key: A unique key for the given label
+    '''
     if key in props:
         set_bg(label, props[key])
     def enter_func(_):
@@ -325,6 +362,7 @@ def add_border_line(widget, hex, height, bottom=True):
         painter.fillRect(0, y_pos, widget.width(), height, _to_qcol(hex))
     add_paint_event(widget, paint_border_line)
 
+
 def append_css(widget, css):
     '''
     Appends css to the given widget
@@ -334,7 +372,7 @@ def append_css(widget, css):
     widget.setStyleSheet(widget.styleSheet() + css)
 
 
-def _to_sheet(dictionary):
+def dict_to_sheet(dictionary):
     '''
     Converts the given dictionary to a style sheet
     :param dictionary: The python dict object to use

@@ -25,7 +25,11 @@ text_css = {
     }
 }
 
-popup_css = {
+network_popup_props = {
+    'bg': item_bg,
+    'bg_hover': item_bg_hover,
+    'item_width': 300,
+    'item_height': 34,
     'css': {
         'color': '#c1c1c1',
         'background-color': item_bg,
@@ -117,38 +121,11 @@ def render_network(data, tools, ui):
         ui.add_label(data.layout, ' CentHub ', text_css)
     )
     tools.multi_apply(lambda x: ui.add_border_line(x, '#50a05b', 2), comps)
-    parent = comps[1]
     if not 'network_popup' in data.props:
-        popup = ui.create_popup(300, 0, item_bg)
-        popup_layout = ui.vbox_layout(popup)
-        output_file = ui.res(__file__, '../../res/test/nmcli-output.txt')
-        output_text = tools.term('cat ' + output_file)
-        networks = data.modules.network.parse_listing(output_text)
-        for network in networks:
-            add_network_entry(ui, network, popup_layout)
+        popup = data.modules.network.create_popup(data, network_popup_props)
         data.props['network_popup'] = popup
-    ui.add_click_popup(parent, data.props['network_popup'], 'center', (0, 0))
-
-
-def add_network_entry(ui, network, popup_layout):
-    frame = QtWidgets.QFrame()
-    frame.setFixedSize(300, 34)
-    f_layout = ui.hbox_layout(frame)
-    f_layout.setContentsMargins(10, 10, 10, 10)
-    ui.add_label(f_layout, network.ssid, {
-        **popup_css, **{'alignment': 'left'}
-    })
-    f_layout.addStretch(1)
-    lock = '&#xf023;' if network.security is not None else '&#xf13e;'
-    ui.add_label(f_layout, ' &#xf1eb; ', popup_css),
-    ui.add_label(f_layout, ' %s' % (lock), popup_css)
-    def handle_enter(_):
-        ui.apply_tree_callback(frame, lambda x: ui.set_bg(x, item_bg_hover))
-    def handle_exit(_):
-        ui.apply_tree_callback(frame, lambda x: ui.set_bg(x, item_bg))
-    ui.add_hover_event(frame, handle_enter, handle_exit)
-    popup_layout.addWidget(frame)
-
+    popup = data.props['network_popup']
+    ui.add_click_popup(comps[1], popup.window, 'center', (0, 0))
 
 
 def render_battery(data, tools, ui):

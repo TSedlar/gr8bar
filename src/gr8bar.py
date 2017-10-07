@@ -42,7 +42,7 @@ def render():
     '''
     Renders the bar from the given configuration file
     '''
-    ui.clearLayout(window_layout)
+    ui.clear_layout(window_layout)
     cfg.config(data)
 
     window.ensurePolished()
