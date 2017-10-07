@@ -1,9 +1,9 @@
 import re
-from PyQt5 import QtCore, QtGui, QtWidgets
 from collections import namedtuple
 
-import tools
+from PyQt5 import QtWidgets
 
+import tools
 
 Network = namedtuple('Network', ['ssid', 'signal', 'security'])
 NetPopup = namedtuple('NetPopup', ['window', 'layout', 'prompt'])

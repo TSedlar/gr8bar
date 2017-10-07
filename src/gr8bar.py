@@ -6,7 +6,7 @@ import types
 
 from PyQt5 import QtCore, QtWidgets
 
-from modules import network, linux, gallium_os
+from modules import sound, network, linux, gallium_os
 import ui
 import tools
 
@@ -30,7 +30,7 @@ window_layout = ui.hbox_layout(window)
 
 properties = {}
 
-modules = types.SimpleNamespace(network=network, linux=linux,
+modules = types.SimpleNamespace(sound=sound, network=network, linux=linux,
                                 gallium_os=gallium_os)
 
 data = types.SimpleNamespace(app=app, panel=window, layout=window_layout,

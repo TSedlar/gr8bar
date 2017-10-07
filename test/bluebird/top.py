@@ -25,17 +25,27 @@ text_css = {
     }
 }
 
-network_popup_props = {
+popup_props = {
     'bg': item_bg,
     'bg_hover': item_bg_hover,
-    'item_width': 300,
-    'item_height': 34,
     'css': {
         'color': '#c1c1c1',
         'background-color': item_bg,
         'font-size': '14px',
         'font-family': 'Hack, FontAwesome'
     }
+}
+
+network_popup_props = {
+    'item_width': 300,
+    'item_height': 34,
+    **popup_props
+}
+
+volume_popup_props = {
+    'item_width': 45,
+    'item_height': 130,
+    **popup_props
 }
 
 
@@ -134,6 +144,7 @@ def render_battery(data, tools, ui):
         ui.add_label(data.layout, ' 100% ', text_css),
     ))
 
+
 def render_volume(data, tools, ui):
     # high = &#xf028;
     # low-mid = &#xf027;
@@ -141,6 +152,11 @@ def render_volume(data, tools, ui):
     volume = ui.add_label(data.layout, ' &#xf027; ', icon_css)
     ui.add_border_line(volume, '#c9e3d3', 2)
     show_hover(data, volume, 'vol_hover_bg')
+    if not 'volume_popup' in data.props:
+        popup = data.modules.sound.create_popup(data, volume_popup_props)
+        data.props['volume_popup'] = popup
+    popup = data.props['volume_popup']
+    ui.add_click_popup(volume, popup, 'center', (0, 0))
 
 
 def render_power(data, tools, ui):
