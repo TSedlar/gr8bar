@@ -59,7 +59,12 @@ def create_prompt(data, props):
     pass_input.setStyleSheet(data.ui.dict_to_sheet(props['css']))
 
     data.ui.apply_tree_callback(frame, lambda x: data.ui.set_bg(x, bg))
-    data.ui.add_show_event(popup, lambda _: pass_input.setFocus())
+
+    def reset_input(_):
+        pass_input.setText('')
+        pass_input.setFocus()
+
+    data.ui.add_show_event(popup, reset_input)
 
     f_layout.addWidget(pass_input)
     popup_layout.addWidget(frame)
