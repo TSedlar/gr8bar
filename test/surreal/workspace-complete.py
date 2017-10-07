@@ -63,7 +63,7 @@ def render_workspace(data):
             last_type = 'ru'
         bg_color = active_panel_bg if idx == workspace else real_panel_bg
         data.ui.add_slant(data.layout, first_type, bg_color)
-        label = data.ui.add_center_label(data.layout, ' %s ' % (lbl), text_css)
+        label = data.ui.add_label(data.layout, ' %s ' % (lbl), text_css)
         data.ui.set_bg(label, bg_color)
         data.ui.add_slant(data.layout, last_type, bg_color)
 
@@ -74,18 +74,18 @@ def render_window_title(data):
         window_title = window_title[:130] + '...'
 
     data.ui.add_slant(data.layout, 'lui', real_panel_bg)
-    data.ui.add_center_label(data.layout, ' %s ' % (window_title), text_css)
+    data.ui.add_label(data.layout, ' %s ' % (window_title), text_css)
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
 def render_welcome(data):
     user = data.props.get(key_user, '?')
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, '&#xf2bd;', text_css)
+    data.ui.add_label(data.layout, '&#xf2bd;', text_css)
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, ' %s ' % (user), text_css)
+    data.ui.add_label(data.layout, ' %s ' % (user), text_css)
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
 # Update functions below

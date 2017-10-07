@@ -72,19 +72,19 @@ def render_cpu(data):
     cpu_temp = data.props.get(key_cpu_temp, '*')
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, '&#xf200;', text_css) # cpu
+    data.ui.add_label(data.layout, '&#xf200;', text_css) # cpu
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, ' %s%% ' % (cpu_percent), text_css)
+    data.ui.add_label(data.layout, ' %s%% ' % (cpu_percent), text_css)
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'lui', real_panel_bg)
-    data.ui.add_center_label(data.layout, '&#xf2db;', text_css) # temp
+    data.ui.add_label(data.layout, '&#xf2db;', text_css) # temp
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'lu', real_panel_bg)
-    data.ui.add_center_label(data.layout, ' %s° C ' % (cpu_temp), text_css)
+    data.ui.add_label(data.layout, ' %s° C ' % (cpu_temp), text_css)
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
 
@@ -92,11 +92,11 @@ def render_mem(data):
     mem = data.props.get(key_mem_used, '*')
 
     data.ui.add_slant(data.layout, 'lui', real_panel_bg)
-    data.ui.add_center_label(data.layout, '&#xf085;', text_css) # mem
+    data.ui.add_label(data.layout, '&#xf085;', text_css) # mem
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, ' %sMB ' % (mem), text_css)
+    data.ui.add_label(data.layout, ' %sMB ' % (mem), text_css)
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
 
@@ -108,21 +108,21 @@ def render_time(data):
         return ' %s ' % (data.tools.time_fmt('%A'))
 
     data.ui.add_slant(data.layout, 'lui', real_panel_bg),
-    data.ui.add_center_label(data.layout, '&#xf073;', text_css), # calendar
+    data.ui.add_label(data.layout, '&#xf073;', text_css), # calendar
     data.ui.add_slant(data.layout, 'ru', real_panel_bg),
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    date_label = data.ui.add_center_label(data.layout, None, text_css)
+    date_label = data.ui.add_label(data.layout, None, text_css)
     data.ui.add_label_hover(date_label, date_txt, date_hov_txt,
                             data.props, key_date_text)
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'lui', real_panel_bg)
-    data.ui.add_center_label(data.layout, '&#xf017;', text_css) # clock
+    data.ui.add_label(data.layout, '&#xf017;', text_css) # clock
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, ' %s ' % (_time), text_css)
+    data.ui.add_label(data.layout, ' %s ' % (_time), text_css)
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
 
@@ -130,11 +130,11 @@ def render_weather(data):
     temp = data.props.get(key_weather_temp, '*')
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, '&#xf0c2;', text_css) # cloud
+    data.ui.add_label(data.layout, '&#xf0c2;', text_css) # cloud
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, ' %s° F ' % (temp), text_css)
+    data.ui.add_label(data.layout, ' %s° F ' % (temp), text_css)
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
 
@@ -142,11 +142,11 @@ def render_network(data):
     ssid = data.props.get(key_network_ssid, '?')
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, '&#xf1eb;', text_css) # wifi
+    data.ui.add_label(data.layout, '&#xf1eb;', text_css) # wifi
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, ' %s ' % (ssid), text_css)
+    data.ui.add_label(data.layout, ' %s ' % (ssid), text_css)
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
 
@@ -155,11 +155,11 @@ def render_volume(data):
     volume = data.props.get(key_volume, '0%')
 
     data.ui.add_slant(data.layout, 'lui', real_panel_bg)
-    data.ui.add_center_label(data.layout, '&#xf028;', text_css) # volume
+    data.ui.add_label(data.layout, '&#xf028;', text_css) # volume
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, ' %s ' % (volume), text_css)
+    data.ui.add_label(data.layout, ' %s ' % (volume), text_css)
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
 
@@ -172,22 +172,22 @@ def render_battery(data):
     battery_icon = battery_icons[int(math.ceil(float(cap) / 25))]
 
     data.ui.add_slant(data.layout, 'lui', real_panel_bg)
-    data.ui.add_center_label(data.layout, battery_icon, text_css) # battery
+    data.ui.add_label(data.layout, battery_icon, text_css) # battery
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_center_label(data.layout, '%s%%' % (cap), text_css)
+    data.ui.add_label(data.layout, '%s%%' % (cap), text_css)
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
     if state == 'Charging':
         data.ui.add_slant(data.layout, 'lui', real_panel_bg)
-        data.ui.add_center_label(data.layout, '&#xf0e7;', text_css) # bolt
+        data.ui.add_label(data.layout, '&#xf0e7;', text_css) # bolt
         data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
 
 def render_power(data):
     data.ui.add_slant(data.layout, 'lui', real_panel_bg)
-    lbl = data.ui.add_center_label(data.layout, ' &#xf011; ', text_css) # power
+    lbl = data.ui.add_label(data.layout, ' &#xf011; ', text_css) # power
     data.ui.add_click_event(lbl, lambda _: data.modules.linux.logout())
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 

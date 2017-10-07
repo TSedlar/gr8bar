@@ -23,6 +23,51 @@ def toggle(widget):
         widget.show()
 
 
+def clearLayout(layout):
+    '''
+    Removes the children from the given layout
+    :param layout: The layout to remove from
+    '''
+    while layout.count():
+        child = layout.takeAt(0)
+        if child.widget():
+            child.widget().deleteLater()
+
+
+def apply_tree_callback(widget, callback):
+    '''
+    Applies the given callback to every widget in the hierarchy
+    :param widget: The parent widget to start application at
+    '''
+    callback(widget)
+    children = widget.children()
+    for child in children:
+        if isinstance(child, QtWidgets.QWidget):
+            callback(child)
+
+
+def hbox_layout(window):
+    '''
+    Creates the deafult QHBoxLayout
+    :param window: The window to create a layout for
+    '''
+    window_layout = QtWidgets.QHBoxLayout(window)
+    window_layout.setContentsMargins(0, 0, 0, 0)
+    window_layout.setSpacing(0)
+    return window_layout
+
+
+def vbox_layout(window):
+    '''
+    Creates the deafult QHBoxLayout
+    :param window: The window to create a layout for
+    '''
+    window_layout = QtWidgets.QVBoxLayout(window)
+    window_layout.setContentsMargins(0, 0, 0, 0)
+    window_layout.setSpacing(0)
+    return window_layout
+
+
 def create_popup(width, height, hex_bg):
     '''
     Creates a blank popup window with the given arguments
@@ -41,9 +86,6 @@ def create_popup(width, height, hex_bg):
     if hex_bg == 'transparent':
         window.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         window.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
-    window_layout = QtWidgets.QHBoxLayout(window)
-    window_layout.setContentsMargins(0, 0, 0, 0)
-    window_layout.setSpacing(0)
     return window
 
 
@@ -106,7 +148,7 @@ def add_slant(layout, slant_type, color):
     return label
 
 
-def add_center_label(layout, text, props={}):
+def add_label(layout, text, props={}):
     '''
     Appends a label with centered text to the bar
     :param layout: The layout to append to
@@ -124,6 +166,13 @@ def add_center_label(layout, text, props={}):
             size = int(props['css']['font-size'].replace('px', ''))
             txt.setFont(QtGui.QFont(family, size))
     txt.setAlignment(QtCore.Qt.AlignCenter)
+    if 'alignment' in props:
+        if props['alignment'] == 'center':
+            txt.setAlignment(QtCore.Qt.AlignCenter)
+        elif props['alignment'] == 'left':
+            txt.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignLeft)
+        elif props['alignment'] == 'right':
+            txt.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignRight)
     layout.addWidget(txt)
     return txt
 
@@ -137,16 +186,41 @@ def add_click_event(widget, callback):
     widget.mousePressEvent = callback
 
 
+def add_mouse_move_event(widget, move_callback):
+    '''
+    Adds a mouse move event to the given widget
+    :param widget: The widget to add a click event to
+    :param move_callback: The callback to execute upon the mouse moving
+    '''
+    widget.setMouseTracking(True)
+    old_move = widget.mouseMoveEvent
+    def override_move_event(evt):
+        old_move(evt)
+        if move_callback:
+            move_callback(evt)
+    widget.mouseMoveEvent = override_move_event
+
+
 def add_hover_event(widget, enter_callback, leave_callback):
     '''
     Adds a hover event to the given widget
     :param widget: The widget to add a click event to
-    :param enter_callback: The callback to execute upon the the hover start
-    :param leave_callback: The callback to execute upon the the hover end
+    :param enter_callback: The callback to execute upon the hover start
+    :param leave_callback: The callback to execute upon the hover end
     '''
     widget.setMouseTracking(True)
-    widget.enterEvent = enter_callback
-    widget.leaveEvent = leave_callback
+    old_enter = widget.enterEvent
+    old_leave = widget.leaveEvent
+    def override_enter_event(evt):
+        old_enter(evt)
+        if enter_callback:
+            enter_callback(evt)
+    def override_leave_event(evt):
+        old_leave(evt)
+        if leave_callback:
+            leave_callback(evt)
+    widget.enterEvent = override_enter_event
+    widget.leaveEvent = override_leave_event
 
 def show_hover(label, off_bg, on_bg, props, key):
     if key in props:

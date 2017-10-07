@@ -26,35 +26,23 @@ window.move(bounds['x'], bounds['y'])
 window.setFixedSize(bounds['w'] if 'w' in bounds else bounds['width'],
                     bounds['h'] if 'h' in bounds else bounds['height'])
 
-window_layout = QtWidgets.QHBoxLayout(window)
-window_layout.setContentsMargins(0, 0, 0, 0)
-window_layout.setSpacing(0)
+window_layout = ui.hbox_layout(window)
 
 properties = {}
 
 modules = types.SimpleNamespace(network=network, linux=linux,
                                 gallium_os=gallium_os)
 
-data = types.SimpleNamespace(panel=window, layout=window_layout, ui=ui, os=os,
-                             tools=tools, props=properties, modules=modules)
-
-
-def clearLayout(layout):
-    '''
-    Removes the children from the given layout
-    :param layout: The layout to remove from
-    '''
-    while layout.count():
-        child = layout.takeAt(0)
-        if child.widget():
-            child.widget().deleteLater()
+data = types.SimpleNamespace(app=app, panel=window, layout=window_layout,
+                             ui=ui, os=os, tools=tools, props=properties,
+                             modules=modules)
 
 
 def render():
     '''
     Renders the bar from the given configuration file
     '''
-    clearLayout(window_layout)
+    ui.clearLayout(window_layout)
     cfg.config(data)
 
     window.ensurePolished()
