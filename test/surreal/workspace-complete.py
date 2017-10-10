@@ -1,8 +1,8 @@
 panel_bg = 'transparent'
 panel_border = 'none'
 
-real_panel_bg = '#282936' # '#2c3e50'
-active_panel_bg = '#2c3e50' # '#1e4a59'
+real_panel_bg = '#383c4a'
+active_panel_bg = '#626777'
 
 icon_color = '#e6e6e6'
 

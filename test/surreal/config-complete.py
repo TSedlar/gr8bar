@@ -5,7 +5,8 @@ zip_code = 85224
 panel_bg = 'transparent'
 panel_border = 'none'
 
-real_panel_bg = '#282936' # '#2c3e50'
+real_panel_bg = '#383c4a'
+real_panel_bg_hover = '#555a6d'
 
 icon_color = '#e6e6e6'
 
@@ -18,6 +19,25 @@ text_css = {
     }
 }
 
+popup_props = {
+    'bg': real_panel_bg,
+    'bg_hover': real_panel_bg_hover,
+    **text_css
+}
+
+net_popup_props = {
+    'item_width': 300,
+    'item_height': 34,
+    **popup_props
+}
+
+vol_popup_props = {
+    'item_width': 40,
+    'item_height': 130,
+    **popup_props
+}
+
+
 key_date_text = 'date_text'
 key_weather_temp = 'weather_temp'
 key_cpu_percent = 'cpu_percent'
@@ -27,6 +47,8 @@ key_network_ssid = 'network_ssid'
 key_volume = 'volume'
 key_battery_cap = 'battery_cap'
 key_battery_state = 'battery_state'
+key_net_popup = 'net_popup'
+key_vol_popup = 'vol_popup'
 
 def bounds():
     return {'x': 65, 'y': 15, 'w': 1791, 'h': 34}
@@ -145,9 +167,18 @@ def render_network(data):
     data.ui.add_label(data.layout, '&#xf1eb;', text_css) # wifi
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
-    data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_label(data.layout, ' %s ' % (ssid), text_css)
-    data.ui.add_slant(data.layout, 'rd', real_panel_bg)
+    ssl = data.ui.add_slant(data.layout, 'ld', real_panel_bg)
+    ssid_label = data.ui.add_label(data.layout, ' %s ' % (ssid), text_css)
+    slr = data.ui.add_slant(data.layout, 'rd', real_panel_bg)
+
+    comps = (ssl, ssid_label, slr)
+
+    if not key_net_popup in data.props:
+        popup = data.modules.network.create_popup(data, net_popup_props)
+        data.props[key_net_popup] = popup
+
+    popup = data.props[key_net_popup]
+    data.ui.add_click_popup(ssid_label, popup.window, 'center', (0, 0))
 
 
 
@@ -159,8 +190,17 @@ def render_volume(data):
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_label(data.layout, ' %s ' % (volume), text_css)
+    vol_label = data.ui.add_label(data.layout, ' %s%% ' % (volume), text_css)
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
+
+    if not key_vol_popup in data.props:
+        set_vol = lambda v: data.modules.gallium_os.set_volume(v)
+        popup = data.modules.sound.create_popup(data, vol_popup_props,
+                                                key_volume, set_vol)
+        data.props[key_vol_popup] = popup
+
+    popup = data.props[key_vol_popup]
+    data.ui.add_click_popup(vol_label, popup, 'center', (0, 0))
 
 
 def render_battery(data):
