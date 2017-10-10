@@ -135,7 +135,7 @@ def render_network(data, tools, ui):
         popup = data.modules.network.create_popup(data, network_popup_props)
         data.props['network_popup'] = popup
     popup = data.props['network_popup']
-    ui.add_click_popup(comps[1], popup.window, 'center', (0, 0))
+    ui.add_click_popup(comps[1], popup.window, 'right', (0, 0))
 
 
 def render_battery(data, tools, ui):

@@ -17,6 +17,10 @@ nmcli_table_regex = str.join('', (
 ))
 
 
+def connect(ssid, pswd):
+    return tools.term("nmcli device wifi connect '%s' password '%s'" % (ssid, pswd))
+
+
 def listing():
     return parse_listing(tools.term('nmcli dev wifi'))
 
@@ -39,7 +43,7 @@ def parse_listing(output):
     return listing
 
 
-def create_prompt(data, props):
+def create_prompt(data, props, on_connect):
     width = props['item_width'] if 'item_width' in props else 300
     bg = props['bg_hover'] if 'bg_hover' in props else default_bg_hover
     popup = data.ui.create_popup(width, 0, bg)
@@ -58,6 +62,18 @@ def create_prompt(data, props):
     pass_input = QtWidgets.QLineEdit()
     pass_input.setStyleSheet(data.ui.dict_to_sheet(props['css']))
 
+    def handle_pass_input(e):
+        code = e.key()
+        if code == 16777220: # enter
+            connect(props['chosen_ssid'], pass_input.text())
+            popup.hide()
+            if on_connect:
+                on_connect()
+        elif code == 16777216: # escape
+            popup.hide()
+
+    pass_input.keyReleaseEvent = handle_pass_input
+
     data.ui.apply_tree_callback(frame, lambda x: data.ui.set_bg(x, bg))
 
     def reset_input(_):
@@ -75,18 +91,20 @@ def create_popup(data, props):
     bg = props['bg'] if 'bg' in props else default_bg
     popup = data.ui.create_popup(width, 0, bg)
     popup_layout = data.ui.vbox_layout(popup)
-    prompt = create_prompt(data, props)
-    update_popup_layout(data, props, popup_layout, prompt)
+    prompt = create_prompt(data, props, lambda: popup.hide())
     data.ui.add_show_event(prompt, lambda _: prompt.activateWindow())
     data.ui.add_hide_event(popup, lambda _: prompt.hide())
+    data.ui.add_show_event(popup, lambda _: update_popup_layout(data, props,
+                                                                popup_layout, prompt))
     return NetPopup(popup, popup_layout, prompt)
 
 
 def update_popup_layout(data, props, popup_layout, prompt):
     data.ui.clear_layout(popup_layout)
-    output_file = data.ui.res(__file__, '../../res/test/nmcli-output.txt')
-    output_text = data.tools.term('cat ' + output_file)
-    networks = data.modules.network.parse_listing(output_text)
+    # output_file = data.ui.res(__file__, '../../res/test/nmcli-output.txt')
+    # output_text = data.tools.term('cat ' + output_file)
+    # networks = data.modules.network.parse_listing(output_text)
+    networks = listing()
     for network in networks:
         _add_network_entry(data.ui, network, popup_layout, prompt, props)
 
@@ -113,5 +131,5 @@ def _add_network_entry(ui, network, popup_layout, prompt, props):
     def handle_exit(_):
         ui.apply_tree_callback(frame, lambda x: ui.set_bg(x, bg))
     ui.add_hover_event(frame, handle_enter, handle_exit)
-    ui.add_click_popup(frame, prompt, 'center', (0, -height))
+    ui.add_click_popup(frame, prompt, 'right', (0, -height))
     popup_layout.addWidget(frame)
