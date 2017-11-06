@@ -5,7 +5,17 @@ def get_volume_level():
     '''
     Gets the current volume level
     '''
-    return tools.term('amixer sget DAC1 | egrep -o "[0-9]+%" | head -1')
+    txt = tools.term('amixer sget DAC1 | egrep -o "[0-9]+%" | head -1')
+    txt = txt.replace('%', '')
+    return int(txt)
+
+
+def set_volume(percent):
+    '''
+    Sets the volume level to the given percent
+    :param percent: The volume percent to set to
+    '''
+    return tools.term('amixer -q sset DAC1 %s%%' % (percent))
 
 
 def increment_volume(percent):
