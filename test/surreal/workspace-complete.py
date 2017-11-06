@@ -41,6 +41,7 @@ def config(data):
     data.layout.addStretch(1)
     render_welcome(data)
 
+
 def render_workspace(data):
     workspace = data.props.get(key_workspace, 0)
     #                     code         term       notes       busy
@@ -76,6 +77,7 @@ def render_window_title(data):
     data.ui.add_slant(data.layout, 'lui', real_panel_bg)
     data.ui.add_label(data.layout, ' %s ' % (window_title), text_css)
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
+
 
 def render_welcome(data):
     user = data.props.get(key_user, '?')

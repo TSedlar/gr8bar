@@ -47,6 +47,8 @@ key_network_ssid = 'network_ssid'
 key_volume = 'volume'
 key_battery_cap = 'battery_cap'
 key_battery_state = 'battery_state'
+key_battery1_cap = 'battery1_cap'
+key_battery1_state = 'battery1_state'
 key_net_popup = 'net_popup'
 key_vol_popup = 'vol_popup'
 
@@ -83,7 +85,7 @@ def config(data):
 
 def render_logo(data):
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    lbl = data.ui.add_image(data.layout, __file__, '../../res/ubuntu-logo.svg', 10)
+    lbl = data.ui.add_image(data.layout, __file__, '../../res/arch-logo.svg', 10)
     data.ui.recolor_pixmap(lbl.pixmap(), icon_color)
     data.ui.set_bg(lbl, real_panel_bg)
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
@@ -194,7 +196,7 @@ def render_volume(data):
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
     if not key_vol_popup in data.props:
-        set_vol = lambda v: data.modules.gallium_os.set_volume(v)
+        set_vol = lambda v: data.modules.linux.set_alsa_volume(v)
         popup = data.modules.sound.create_popup(data, vol_popup_props,
                                                 key_volume, set_vol)
         data.props[key_vol_popup] = popup
@@ -205,21 +207,28 @@ def render_volume(data):
 
 def render_battery(data):
     cap = data.props.get(key_battery_cap, -1)
+    cap1 = data.props.get(key_battery1_cap, -1)
     state = data.props.get(key_battery_state, 'Invalid')
+    state1 = data.props.get(key_battery1_state, 'Invalid')
 
     #                    0%        1-25%       26-50%      51-75%     76-100%
     battery_icons = ['&#xf244;', '&#xf243;', '&#xf242;', '&#xf241;', '&#xf240;']
     battery_icon = battery_icons[int(math.ceil(float(cap) / 25))]
+    battery1_icon = battery_icons[int(math.ceil(float(cap1) / 25))]
 
     data.ui.add_slant(data.layout, 'lui', real_panel_bg)
     data.ui.add_label(data.layout, battery_icon, text_css) # battery
     data.ui.add_slant(data.layout, 'ru', real_panel_bg)
 
     data.ui.add_slant(data.layout, 'ld', real_panel_bg)
-    data.ui.add_label(data.layout, '%s%%' % (cap), text_css)
+    data.ui.add_label(data.layout, 'E:%s%%' % (cap1), text_css)
     data.ui.add_slant(data.layout, 'rd', real_panel_bg)
 
-    if state == 'Charging':
+    data.ui.add_slant(data.layout, 'lui', real_panel_bg)
+    data.ui.add_label(data.layout, 'I:%s%%' % (cap), text_css)
+    data.ui.add_slant(data.layout, 'rd', real_panel_bg)
+
+    if state == 'Charging' or state1 == 'Charging':
         data.ui.add_slant(data.layout, 'lui', real_panel_bg)
         data.ui.add_label(data.layout, '&#xf0e7;', text_css) # bolt
         data.ui.add_slant(data.layout, 'rd', real_panel_bg)
@@ -251,9 +260,13 @@ def update_network(tools, modules, props):
 
 
 def update_volume(tools, modules, props):
-    props[key_volume] = modules.gallium_os.get_volume_level()
+    props[key_volume] = modules.linux.get_alsa_volume()
 
 
 def update_battery(tools, modules, props):
+    bat1 = tools.term('cat /sys/class/power_supply/BAT1/capacity')
+    bat1_state = tools.term('cat /sys/class/power_supply/BAT1/status')
     props[key_battery_cap] = modules.linux.get_battery_capacity()
     props[key_battery_state] = modules.linux.get_battery_state()
+    props[key_battery1_cap] = int(bat1)
+    props[key_battery1_state] = bat1_state

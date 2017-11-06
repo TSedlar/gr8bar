@@ -27,7 +27,8 @@ def get_mem_used():
     '''
     Gets the current amount of memory being used
     '''
-    return tools.term("free -m | grep 'Mem:' | awk '{print $6}'")
+    txt = tools.term('vmstat -s | egrep -m2 -o "[0-9]+" | tail -1')
+    return int(int(txt) / 1000)
 
 
 def get_network_ssid():
@@ -72,3 +73,20 @@ def get_user():
     Gets the currently logged in user's username
     '''
     return tools.term('id -u -n')
+
+
+def get_alsa_volume():
+    '''
+    Gets the volume level reported by alsamixer
+    '''
+    txt = tools.term('amixer sget Master | egrep -o "[0-9]+%" | head -1')
+    txt = txt.replace('%', '')
+    return int(txt)
+
+
+def set_alsa_volume(percent):
+    '''
+    Sets the volume level using alsamixer
+    :param percent: The volume percent to set to
+    '''
+    return tools.term("amixer sset 'Master' %s%%" % (percent))
